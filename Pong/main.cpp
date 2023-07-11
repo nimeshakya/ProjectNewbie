@@ -73,6 +73,11 @@ public:
 	// moves the ball around the screen dealing with collistions
 	void moveBall(Wall wallTop, Wall wallBot, Bat bat1, Bat bat2, double deltaTime);
 
+	// checks collision with the wall
+	bool WallCollision(Wall const& wall);
+	// checcks collision with the bat
+	bool PaddleCollision(Bat const& bat);
+
 	// render the ball to the screen
 	void renderBall();
 private:
@@ -306,6 +311,11 @@ void Ball::renderBall()
 	SDL_RenderFillRect(gRenderer, ballRect);
 }
 
+bool WallCollision(const Wall &wall)
+{
+	SDL_Rect* wallRect = wall.getRect();
+}
+
 void Ball::moveBall(Wall wallTop, Wall wallBot, Bat bat1, Bat bat2, double deltaTime)
 {
 	SDL_Rect* bat1Rect = bat1.getRect();
@@ -313,18 +323,25 @@ void Ball::moveBall(Wall wallTop, Wall wallBot, Bat bat1, Bat bat2, double delta
 	SDL_Rect* wallTopRect = wallTop.getRect();
 	SDL_Rect* wallBotRect = wallBot.getRect();
 
-	if ((ballRect->x + ballRect->w > bat2Rect->x) && (ballRect->y > bat2Rect->y && ballRect->y < bat2Rect->y + bat2Rect->h))
+	bool hasBallCrossedBat1XPos{ (ballRect->x < bat1Rect->x + bat1Rect->w) };
+	bool isBallInsideBat1Height{ (ballRect->y > bat1Rect->y && ballRect->y < bat1Rect->y + bat1Rect->h) };
+	bool hasBallGoneBehindBat1{ ballRect->x < bat2Rect->x };
+
+	bool hasBallCrossedBat2XPos{ (ballRect->x + ballRect->w > bat2Rect->x) };
+	bool isBallInsideBat2Height{ (ballRect->y > bat2Rect->y && ballRect->y < bat2Rect->y + bat2Rect->h) };
+	bool hasBallGoneBehindBat2{ballRect->x > bat2Rect->x + bat2Rect->w};
+
+	if (hasBallCrossedBat2XPos && isBallInsideBat2Height && !hasBallGoneBehindBat2)
 	{
 		xDir = -1;
 	}
-	else if (ballRect->x < bat1Rect->x + bat1Rect->w)
+	else if (hasBallCrossedBat1XPos && isBallInsideBat1Height && !hasBallGoneBehindBat1)
 	{
 		xDir = 1;
 	}
 
 	if (ballRect->y < wallTopRect->y + wallTopRect->h)
 	{
-		std::cout << "this happened";
 		yDir = 1;
 	}
 	else if (ballRect->y + ballRect->h > wallBotRect->y)
@@ -333,7 +350,7 @@ void Ball::moveBall(Wall wallTop, Wall wallBot, Bat bat1, Bat bat2, double delta
 	}
 
 	ballRect->x += xDir * (int)(mVelX * deltaTime);
-	//ballRect->y += yDir * (int)(mVelY * deltaTime);
+	ballRect->y += yDir * (int)(mVelY * deltaTime);
 }
 
 bool init()
