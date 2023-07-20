@@ -21,6 +21,19 @@ private:
 	SDL_Rect wallRect;
 };
 
+class Bat
+{
+public:
+	// contructor with default parameter of pos x set
+	Bat(int posX = UNIT_SQARE_LENGTH * 2);
+	// render bat
+	void renderBat();
+	// returns the bat rect
+	SDL_Rect getRect();
+private:
+	SDL_Rect batRect;
+};
+
 class BallSpawnner
 {
 public:
@@ -63,6 +76,25 @@ void Wall::renderWall()
 SDL_Rect Wall::getRect()
 {
 	return wallRect;
+}
+
+// Bat functions
+
+Bat::Bat(int posX)
+{
+	int batHeight = UNIT_SQARE_LENGTH * 5;
+	batRect = { posX, (SCREEN_HEIGHT - batHeight) / 2, UNIT_SQARE_LENGTH, batHeight };
+}
+
+void Bat::renderBat()
+{
+	SDL_SetRenderDrawColor(gRenderer, 0xCC, 0xCC, 0xCC, 0xFF);
+	SDL_RenderFillRect(gRenderer, &batRect);
+}
+
+SDL_Rect Bat::getRect()
+{
+	return batRect;
 }
 
 // BallSpawnner functions
@@ -203,6 +235,9 @@ int main(int argc, char* argv[])
 			BallSpawnner spawnner;
 			spawnner.calcSpawnPosition();
 
+			Bat bat1;
+			Bat bat2 = (SCREEN_WIDTH - UNIT_SQARE_LENGTH * 2);
+
 			while (!quit) // main loop
 			{
 				while (SDL_PollEvent(&e) != 0) // event loop
@@ -219,6 +254,9 @@ int main(int argc, char* argv[])
 				// render
 				wallTop.renderWall();
 				wallBot.renderWall();
+
+				bat1.renderBat();
+				bat2.renderBat();
 
 				spawnner.render();
 
