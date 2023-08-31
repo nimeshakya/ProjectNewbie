@@ -1,3 +1,5 @@
+#include <SDL.h>
+
 #ifndef WINDOW
 #define WINDOW
 

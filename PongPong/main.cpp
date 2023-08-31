@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Border.h"
 #include "Paddle.h"
+#include "BallSpawnner.h"
 
 // rendering variables
 SDL_Window* gWindow{ NULL };
@@ -116,6 +117,9 @@ int main(int argc, char* argv[])
 	Paddle paddleRight;
 	Paddle paddleLeft(SCREEN_WIDTH - UNIT_SIZE * 2);
 
+	BallSpawnner ballSpawnner;
+	ballSpawnner.calculateSpawnPosition();
+
 	while (!quit) // game loop
 	{
 		while (SDL_PollEvent(&e) != 0) // event loop
@@ -135,6 +139,8 @@ int main(int argc, char* argv[])
 
 		paddleLeft.render();
 		paddleRight.render();
+
+		ballSpawnner.render();
 
 		// present render
 		SDL_RenderPresent(gRenderer);
