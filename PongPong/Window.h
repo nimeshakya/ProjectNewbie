@@ -3,6 +3,12 @@
 #ifndef WINDOW
 #define WINDOW
 
+enum class PlayerType
+{
+	PLAYER_ONE,
+	PLAYER_TWO
+};
+
 inline constexpr int UNIT_SIZE{ 20 };
 
 // screen dimension

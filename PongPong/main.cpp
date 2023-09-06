@@ -124,11 +124,14 @@ int main(int argc, char* argv[])
 	{
 		while (SDL_PollEvent(&e) != 0) // event loop
 		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
+			if (e.type == SDL_QUIT) quit = true;
 		}
+
+		paddleLeft.movePaddle(e, PlayerType::PLAYER_ONE, 0.0f);
+		paddleRight.movePaddle(e, PlayerType::PLAYER_TWO, 0.0f);
+		paddleLeft.update();
+		paddleRight.update();
+
 		// clear renderer
 		SDL_SetRenderDrawColor(gRenderer, gBoardColor.r, gBoardColor.g, gBoardColor.b, gBoardColor.a);
 		SDL_RenderClear(gRenderer);
