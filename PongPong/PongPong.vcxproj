@@ -151,12 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BallSpawnner.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Border.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="BallSpawnner.h" />
     <ClInclude Include="Border.h" />
     <ClInclude Include="Paddle.h" />

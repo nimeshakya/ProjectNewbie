@@ -1,4 +1,6 @@
 #include <vector>
+#include <random>
+#include <SDL.h>
 
 #ifndef BALL_SPAWNNER
 #define BALL_SPAWNNER
@@ -14,6 +16,9 @@ public:
 
 	// renders a sqare to indicate spawn position
 	void render();
+
+	// returns a random spawn point along the spawnner position with mYpositions and mPosX
+	SDL_Point getSpawnPoint(std::mt19937 generator);
 private:
 	std::vector<int> mYpositions;
 	int mPosX;

@@ -11,6 +11,12 @@ public:
 
 	// renders the border to the screen
 	void render();
+
+	// returns the rect of the border
+	inline SDL_Rect getRect()
+	{
+		return mBorderRect;
+	}
 private:
 	SDL_Rect mBorderRect;
 };

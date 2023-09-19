@@ -1,5 +1,7 @@
 #include "BallSpawnner.h"
 #include "Window.h"
+#include <iostream>
+#include <random>
 #include <SDL.h>
 
 BallSpawnner::BallSpawnner()
@@ -21,6 +23,7 @@ void BallSpawnner::calculateSpawnPosition()
 		if (i % 2 == 0)
 		{
 			mYpositions.push_back(currYpos);
+			std::cout << currYpos << '\t';
 		}
 		currYpos += UNIT_SIZE;
 	}
@@ -35,4 +38,16 @@ void BallSpawnner::render()
 		SDL_Rect newRect = { mPosX, mYpositions[i], UNIT_SIZE, UNIT_SIZE };
 		SDL_RenderFillRect(gRenderer, &newRect);
 	}
+}
+
+SDL_Point BallSpawnner::getSpawnPoint(std::mt19937 generator)
+{
+	// random number from range 0 to (size of mYpositions - 1) (-1 because uniform_int_distribution is takes range as [a, b] and not [a, b)
+	std::uniform_int_distribution<int> distribution(0, mYpositions.size() - 1);
+
+	SDL_Point spawnPoint;
+	spawnPoint.x = mPosX;
+	spawnPoint.y = mYpositions[distribution(generator)];
+
+	return spawnPoint;
 }

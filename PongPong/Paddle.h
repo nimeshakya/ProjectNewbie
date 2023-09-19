@@ -12,19 +12,23 @@ public:
 	~Paddle();
 
 	// moves the bat according to input
-	void movePaddle(SDL_Event& e, PlayerType playerType, float deltaTime);
-	// clears the mVel;
-	void clearVelocity(SDL_Event& e);
+	void movePaddle(SDL_Event& e, PlayerType playerType);
 
 	// update state of paddle according to changes
-	void update();
+	void update(float deltaTime);
 	
 	// renders the bat on screen
 	void render();
+
+	// return rect of paddle
+	inline SDL_Rect getRect()
+	{
+		return mPaddleRect;
+	}
 private:
 	SDL_Rect mPaddleRect;
 	float mVelY{};
-	int moveY{};
+	int mDirY{};
 };
 
 #endif // !PADDLE

@@ -2,11 +2,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <random>
 
 #include "Window.h"
 #include "Border.h"
 #include "Paddle.h"
 #include "BallSpawnner.h"
+#include "Ball.h"
 
 // rendering variables
 SDL_Window* gWindow{ NULL };
@@ -110,6 +112,13 @@ int main(int argc, char* argv[])
 	bool quit{ false }; // quit flag
 	SDL_Event e; // event handler
 
+	// random number generator 
+	std::random_device rd;
+	std::mt19937 generator{ rd() };
+
+	Uint32 ticksCount{};
+	float deltaTime{};
+
 	/* Game Objects */
 	Border topBorder;
 	Border botBorder(SCREEN_HEIGHT - UNIT_SIZE);
@@ -120,6 +129,8 @@ int main(int argc, char* argv[])
 	BallSpawnner ballSpawnner;
 	ballSpawnner.calculateSpawnPosition();
 
+	Ball ball(ballSpawnner.getSpawnPoint(generator));
+
 	while (!quit) // game loop
 	{
 		while (SDL_PollEvent(&e) != 0) // event loop
@@ -127,10 +138,20 @@ int main(int argc, char* argv[])
 			if (e.type == SDL_QUIT) quit = true;
 		}
 
-		paddleLeft.movePaddle(e, PlayerType::PLAYER_ONE, 0.0f);
-		paddleRight.movePaddle(e, PlayerType::PLAYER_TWO, 0.0f);
-		paddleLeft.update();
-		paddleRight.update();
+		// delta time calculation
+		while (!SDL_TICKS_PASSED(SDL_GetTicks(), ticksCount + 16)) // frame limit to 60FPS 16.6ms ~ 16ms per frame
+			;
+		deltaTime = (SDL_GetTicks() - ticksCount) / 1000.0f;
+		// clamp maximum delta time value
+		if (deltaTime > 0.05f)
+		{
+			deltaTime = 0.05f;
+		}
+		ticksCount = SDL_GetTicks();
+		paddleLeft.movePaddle(e, PlayerType::PLAYER_ONE);
+		paddleRight.movePaddle(e, PlayerType::PLAYER_TWO);
+		paddleLeft.update(deltaTime);
+		paddleRight.update(deltaTime);
 
 		// clear renderer
 		SDL_SetRenderDrawColor(gRenderer, gBoardColor.r, gBoardColor.g, gBoardColor.b, gBoardColor.a);
@@ -144,6 +165,8 @@ int main(int argc, char* argv[])
 		paddleRight.render();
 
 		ballSpawnner.render();
+
+		ball.render();
 
 		// present render
 		SDL_RenderPresent(gRenderer);
