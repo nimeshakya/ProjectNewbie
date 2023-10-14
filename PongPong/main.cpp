@@ -9,6 +9,7 @@
 #include "Paddle.h"
 #include "BallSpawnner.h"
 #include "Ball.h"
+#include "Vector2.h"
 
 // rendering variables
 SDL_Window* gWindow{ NULL };
@@ -148,10 +149,13 @@ int main(int argc, char* argv[])
 			deltaTime = 0.05f;
 		}
 		ticksCount = SDL_GetTicks();
+
 		paddleLeft.movePaddle(e, PlayerType::PLAYER_ONE);
 		paddleRight.movePaddle(e, PlayerType::PLAYER_TWO);
 		paddleLeft.update(deltaTime);
 		paddleRight.update(deltaTime);
+
+		ball.update(deltaTime, paddleLeft, paddleRight);
 
 		// clear renderer
 		SDL_SetRenderDrawColor(gRenderer, gBoardColor.r, gBoardColor.g, gBoardColor.b, gBoardColor.a);

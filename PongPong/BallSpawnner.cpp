@@ -23,7 +23,6 @@ void BallSpawnner::calculateSpawnPosition()
 		if (i % 2 == 0)
 		{
 			mYpositions.push_back(currYpos);
-			std::cout << currYpos << '\t';
 		}
 		currYpos += UNIT_SIZE;
 	}

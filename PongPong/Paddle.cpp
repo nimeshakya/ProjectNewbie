@@ -53,3 +53,19 @@ void Paddle::render()
 	SDL_RenderFillRect(gRenderer, &mPaddleRect);
 }
 
+bool Paddle::isCollidedWithBorder(Border& border)
+{
+	SDL_Rect borderRect{ border.getRect() };
+
+	int borderLeft{ borderRect.x };
+	int broderRight{ borderRect.x + borderRect.w };
+	int borderTop{ borderRect.y };
+	int borderBottom{ borderRect.y + borderRect.h };
+
+	int paddleLeft{ mPaddleRect.x };
+	int paddleRight{ mPaddleRect.x + mPaddleRect.w };
+	int paddleTop{ mPaddleRect.y };
+	int paddleBottom{ mPaddleRect.y + mPaddleRect.h };
+
+	return false;
+}

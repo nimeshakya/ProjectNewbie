@@ -1,6 +1,7 @@
 #include <SDL.h>
-#include "Window.h"
 #include <iostream>
+#include "Window.h"
+#include "Border.h"
 
 #ifndef PADDLE
 #define PADDLE
@@ -19,6 +20,9 @@ public:
 	
 	// renders the bat on screen
 	void render();
+
+	// check if collided with border
+	bool isCollidedWithBorder(Border& border);
 
 	// return rect of paddle
 	inline SDL_Rect getRect()
