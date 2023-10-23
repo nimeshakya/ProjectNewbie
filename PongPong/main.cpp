@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
 		paddleLeft.update(deltaTime);
 		paddleRight.update(deltaTime);
 
-		ball.update(deltaTime, paddleLeft, paddleRight);
+		ball.update(deltaTime, paddleLeft, paddleRight, ballSpawnner, generator);
 
 		// clear renderer
 		SDL_SetRenderDrawColor(gRenderer, gBoardColor.r, gBoardColor.g, gBoardColor.b, gBoardColor.a);

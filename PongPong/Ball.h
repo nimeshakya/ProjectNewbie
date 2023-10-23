@@ -35,15 +35,17 @@ public:
 	void render();
 
 	// update ball state (mostly position)
-	void update(float deltaTime, Paddle const& padLeft, Paddle const& padRight);
+	void update(float deltaTime, Paddle const& padLeft, Paddle const& padRight, BallSpawnner const& spawnner, std::mt19937 generator);
 
 	Contact checkPaddleCollision(Paddle paddle);
 
-	Contact checkWallCollision()
+	Contact checkWallCollision();
 
 	void collideWithPaddle(Contact const& contact);
 
-	inline SDL_Rect getRect()
+	void collideWithWall(Contact const& contact, BallSpawnner spawnner, std::mt19937 generator);
+
+ 	inline SDL_Rect getRect()
 	{
 		return mBallRect;
 	}

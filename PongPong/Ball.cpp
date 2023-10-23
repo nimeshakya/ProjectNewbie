@@ -29,7 +29,7 @@ Ball::Ball(SDL_Point spawnPoint)
 
 Ball::~Ball() {}
 
-void Ball::update(float deltaTime, Paddle const& padLeft, Paddle const& padRight)
+void Ball::update(float deltaTime, Paddle const& padLeft, Paddle const& padRight, BallSpawnner const& spawnner, std::mt19937 generator)
 {
 	position += velocity * deltaTime;
 
@@ -42,6 +42,11 @@ void Ball::update(float deltaTime, Paddle const& padLeft, Paddle const& padRight
 	{
 		collideWithPaddle(contact);
 	}
+	else if (contact = checkWallCollision(); contact.type != CollisionType::NONE)
+	{
+		collideWithWall(contact, spawnner, generator);
+	}
+
 }
 
 Contact Ball::checkPaddleCollision(Paddle paddle)
@@ -106,6 +111,42 @@ Contact Ball::checkPaddleCollision(Paddle paddle)
 	return contact;
 }
 
+Contact Ball::checkWallCollision()
+{
+	float ballLeft = position.x;
+	float ballRight = position.x + mBallRect.w;
+	float ballTop = position.y;
+	float ballBottom = position.y + mBallRect.h;
+
+	float borderLeft = 0;
+	float borderRight = SCREEN_WIDTH;
+	float borderTop = UNIT_SIZE;
+	float borderBottom = SCREEN_HEIGHT - UNIT_SIZE;
+
+	Contact contact{};
+
+	if (ballLeft < borderLeft)
+	{
+		contact.type = CollisionType::LEFT;
+	}
+	else if (ballRight > borderRight)
+	{
+		contact.type = CollisionType::RIGHT;
+	}
+	else if (ballTop < borderTop)
+	{
+		contact.type = CollisionType::TOP;
+		contact.penetration = borderTop - ballTop;
+	}
+	else if (ballBottom > borderBottom)
+	{
+		contact.type = CollisionType::BOTTOM;
+		contact.penetration = borderBottom - ballBottom;
+	}
+
+	return contact;
+}
+
 void Ball::collideWithPaddle(Contact const& contact)
 {
 	position.x += contact.penetration;
@@ -118,6 +159,31 @@ void Ball::collideWithPaddle(Contact const& contact)
 	else if (contact.type == CollisionType::BOTTOM)
 	{
 		velocity.y = 0.75f * BALL_VELOCITY;
+	}
+}
+
+void Ball::collideWithWall(Contact const& contact, BallSpawnner spawnner, std::mt19937 generator)
+{
+	if ((contact.type == CollisionType::TOP) || (contact.type == CollisionType::BOTTOM))
+	{
+		position.y += contact.penetration;
+		velocity.y = -velocity.y;
+	}
+	else if (contact.type == CollisionType::LEFT)
+	{
+		SDL_Point newSpawnPoint{ spawnner.getSpawnPoint(generator) };
+		position.x = newSpawnPoint.x;
+		position.y = newSpawnPoint.y;
+		velocity.x = BALL_VELOCITY;
+		velocity.y = 0.75f * BALL_VELOCITY;
+	}
+	else if (contact.type == CollisionType::RIGHT)
+	{
+		SDL_Point newSpawnPoint{ spawnner.getSpawnPoint(generator) };
+		position.x = newSpawnPoint.x;
+		position.y = newSpawnPoint.y;
+		velocity.x = -BALL_VELOCITY;
+		velocity.y = 0.75 * BALL_VELOCITY;
 	}
 }
 
