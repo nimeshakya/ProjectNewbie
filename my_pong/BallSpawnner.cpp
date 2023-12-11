@@ -10,3 +10,8 @@ void BallSpawnner::Render()
 		SDL_RenderFillRect(g_renderer, &spawnRect);
 	}
 }
+
+Vec2 BallSpawnner::GetSpawnPosition()
+{
+	return m_positions[m_positions.size() / 2];
+}

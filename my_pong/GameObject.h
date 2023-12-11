@@ -8,11 +8,11 @@
 
 class GameObject
 {
-private:
+protected:
 	Vec2 m_position;
 	int m_width, m_height;
 public:
-	GameObject(int x = 0, int y = 0, int w = 0, int h = 0)
+	GameObject(double x = 0, double y = 0, int w = 0, int h = 0)
 		: m_position{ Vec2{x, y} }, m_width{ w }, m_height{ h }
 	{}
 

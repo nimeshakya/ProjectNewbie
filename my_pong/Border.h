@@ -7,7 +7,7 @@
 class Border : public GameObject
 {
 public:
-	Border(int x = 0, int y = 0, int w = SCREEN_WIDTH, int h = UNIT_LENGTH)
+	Border(double x = 0, double y = 0, int w = SCREEN_WIDTH, int h = UNIT_LENGTH)
 		: GameObject{ x, y, w, h }
 	{}
 };

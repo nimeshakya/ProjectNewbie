@@ -5,6 +5,7 @@
 #include "Paddle.h"
 #include "Border.h"
 #include "BallSpawnner.h"
+#include "Ball.h"
 
 // initializes SDL and subsystems
 bool init();
@@ -99,6 +100,11 @@ int main(int argc, char* argv[])
 
 			BallSpawnner ballSpawnner{};
 
+			Ball ball{ ballSpawnner.GetSpawnPosition() };
+
+			// For time calculation
+			Uint32 lastUpdate = SDL_GetTicks();
+
 			while (!quit) // main loop
 			{
 				while (SDL_PollEvent(&e) != 0) // event loop
@@ -107,12 +113,24 @@ int main(int argc, char* argv[])
 					{
 						quit = true;
 					}
-
+					
 				}
+				paddle1.HandleMovement(true);
+				paddle2.HandleMovement(false);
+
+				Uint32 currentTick = SDL_GetTicks();
+				double deltaTime = (currentTick - lastUpdate) / 1000.0f;
+
+				paddle1.Update(deltaTime);
+				paddle2.Update(deltaTime);
+
+				lastUpdate = currentTick;
+
 				// clear renderer
 				SDL_SetRenderDrawColor(g_renderer, GameObjColor::BG_RED , GameObjColor::BG_GREEN, GameObjColor::BG_BLUE, 255);
 				SDL_RenderClear(g_renderer);
 			
+				// render gmae objects
 				borderTop.Render();
 				borderBot.Render();
 
@@ -120,6 +138,8 @@ int main(int argc, char* argv[])
 				paddle2.Render();
 
 				ballSpawnner.Render();
+
+				ball.Render();
 
 				// present render
 				SDL_RenderPresent(g_renderer);

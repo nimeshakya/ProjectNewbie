@@ -135,8 +135,10 @@
   <ItemGroup>
     <ClCompile Include="BallSpawnner.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paddle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="BallSpawnner.h" />
     <ClInclude Include="Border.h" />
     <ClInclude Include="GameObject.h" />

@@ -6,10 +6,19 @@
 
 class Paddle : public GameObject
 {
+private:
+	int PADDLE_VELOCITY;
+	double m_velY;
 public:
-	Paddle(int x = 0, int y = 0, int w = UNIT_LENGTH, int h = UNIT_LENGTH * 5)
-		: GameObject{ x, y, w, h }
+	Paddle(double x = 0, double y = 0, int w = UNIT_LENGTH, int h = UNIT_LENGTH * 5)
+		: GameObject{ x, y, w, h }, m_velY{ 0.0 }, PADDLE_VELOCITY{ 500 }
 	{}
+
+	// updates any changes to the state of object
+	void Update(double deltaTime);
+
+	// handles movement through input (isPlayerOne decides which keys to take as input)
+	void HandleMovement(bool isPlayerOne);
 };
 
 #endif // !PADDLE_H

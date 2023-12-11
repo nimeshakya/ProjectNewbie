@@ -21,6 +21,9 @@
     <ClCompile Include="BallSpawnner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Paddle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BallSpawnner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
