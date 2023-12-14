@@ -14,6 +14,10 @@ public:
 	{
 		return Vec2{ x * k, y * k };
 	}
+	Vec2 operator+(Vec2 u)
+	{
+		return Vec2{ x + u.x, y + u.y };
+	}
 public:
 	double x, y;
 };

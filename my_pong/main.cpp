@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
 			BallSpawnner ballSpawnner{};
 
-			Ball ball{ ballSpawnner.GetSpawnPosition() };
+			Ball ball{ ballSpawnner.GetSpawnPosition() + Vec2(30.0, 0.0) };
 
 			// For time calculation
 			Uint32 lastUpdate = SDL_GetTicks();
@@ -121,8 +121,17 @@ int main(int argc, char* argv[])
 				Uint32 currentTick = SDL_GetTicks();
 				double deltaTime = (currentTick - lastUpdate) / 1000.0f;
 
+				// max value for deltaTime (avoid jumping of game objects)
+				if (deltaTime > 0.05f)
+				{
+					deltaTime = 0.05f;
+				}
+
 				paddle1.Update(deltaTime);
 				paddle2.Update(deltaTime);
+
+				ball.HandleCollision(paddle1, paddle2, borderTop, borderBot);
+				ball.Update(deltaTime);
 
 				lastUpdate = currentTick;
 

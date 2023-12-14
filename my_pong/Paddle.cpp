@@ -2,7 +2,7 @@
 
 void Paddle::Update(double deltaTime)
 {
-	m_position += Vec2{ 0, m_velY } * PADDLE_VELOCITY * deltaTime;
+	m_position += Vec2{ 0, m_velY } * PADDLE_SPEED * deltaTime;
 }
 
 // handles movement through input (isPlayerOne decides which keys to take as input)
