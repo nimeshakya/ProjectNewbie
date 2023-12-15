@@ -34,6 +34,23 @@ void Ball::CollideWithPaddle(Collision* collision)
 {
 	// revert penetration
 	m_position.x += collision->penetration > 0 ? collision->penetration + 5.0 : collision->penetration - 5.0;
+
+	if (collision->collisionArea == CollisionArea::TOP)
+	{
+		std::cout << "COLLISION TOP\n";
+		m_velY = -collision->directionalChange;
+	}
+	else if (collision->collisionArea == CollisionArea::MIDDLE)
+	{
+		std::cout << "COLLISION MIDDLE\n";
+		m_velY = m_velY;
+	}
+	else
+	{
+		std::cout << "COLLISION BOTTOM\n";
+		m_velY = collision->directionalChange;
+	}
+
 	m_velX *= -1;
 }
 
@@ -75,7 +92,7 @@ Collision* Ball::HandlePaddleCollision(const Paddle& paddle)
 		return collision;
 	}
 
-	collision = new Collision{ 0.0, 0.0 };
+	collision = new Collision{ 0.0, 0.0, CollisionArea::NONE};
 
 	// calculation of penetration for each paddle (left and right)
 	if (m_velX > 0) // mopving right
@@ -88,6 +105,28 @@ Collision* Ball::HandlePaddleCollision(const Paddle& paddle)
 		// left paddle
 		collision->penetration = paddleRight - ballLeft;
 	}
+
+	// calculation of where ball hit paddle
+	double paddleMiddle{ paddleTop + (paddleBottom - paddleTop) / 2 };
+
+	double ballMiddle{ ballTop + (ballBottom - ballTop) / 2 };
+
+	double maxBallMidPaddleMidDistance{ (ballMiddle - ballTop) + paddleBottom - paddleMiddle };
+
+	if (ballMiddle < paddleMiddle)
+	{
+		collision->collisionArea = CollisionArea::TOP;
+	}
+	else if (ballMiddle > paddleMiddle)
+	{
+		collision->collisionArea = CollisionArea::BOTTOM;
+	}
+	else
+	{
+		collision->collisionArea = CollisionArea::MIDDLE;
+	}
+
+	collision->directionalChange = abs((paddleMiddle - ballMiddle) / maxBallMidPaddleMidDistance);
 
 	return collision;
 }

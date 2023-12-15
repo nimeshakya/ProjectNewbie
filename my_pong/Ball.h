@@ -6,10 +6,19 @@
 #include "Paddle.h"
 #include "Border.h"
 
+enum class CollisionArea
+{
+	NONE,
+	TOP,
+	MIDDLE,
+	BOTTOM,
+};
+
 struct Collision
 {
 	double penetration;
 	double directionalChange;
+	CollisionArea collisionArea;
 };
 
 class Ball : public GameObject
@@ -19,7 +28,7 @@ private:
 	double m_velX, m_velY;
 public:
 	Ball(Vec2 position, int w = UNIT_LENGTH, int h = UNIT_LENGTH)
-		: GameObject(position.x, position.y, w, h), BALL_SPEED{ 500 }, m_velX(0.0), m_velY(1.0)
+		: GameObject(position.x, position.y, w, h), BALL_SPEED{ 500 }, m_velX(1.0), m_velY(0.0)
 	{}
 
 	// handles all update of states
